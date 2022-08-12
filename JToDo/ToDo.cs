@@ -1,8 +1,12 @@
-﻿namespace JToDo
+﻿using System;
+using System.IO;
+
+namespace JToDo
 {
     public static class ToDo
     {
         public static Dictionary<Title, List<Data>> Table = new Dictionary<Title, List<Data>>();
+        public static string path;
 
         public static void Main(string[] args)
         {
@@ -42,9 +46,7 @@
                     case "open":
                         if (args.Length == 2)
                         {
-                            string path = args[1];
-
-
+                            path = args[1];
                         }
                         else
                         {
@@ -55,6 +57,22 @@
                         break;
                 }
             }
+        }
+
+        public static void Save()
+        {
+            DataWriter dataWriter = new DataWriter();
+
+            // データの書き込み処理
+
+            File.WriteAllBytes(path, dataWriter.GetData());
+        }
+
+        public static void Load()
+        {
+            DataReader dataReader = new DataReader(File.ReadAllBytes(path));
+
+            // データの読み込み処理
         }
     }
 }
