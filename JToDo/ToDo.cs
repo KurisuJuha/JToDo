@@ -33,7 +33,7 @@ namespace JToDo
             }
         }
 
-        public static void Save()
+        public static bool Save()
         {
             try
             {
@@ -42,24 +42,28 @@ namespace JToDo
                 // データの書き込み処理
 
                 File.WriteAllBytes(path, dataWriter.GetData());
+                return true;
             }
             catch (Exception)
             {
                 Console.WriteLine("データのセーブに失敗しました。");
+                return false;
             }
         }
 
-        public static void Load()
+        public static bool Load()
         {
             try
             {
                 DataReader dataReader = new DataReader(File.ReadAllBytes(path));
 
                 // データの読み込み処理
+                return true;
             }
             catch (Exception)
             {
                 Console.WriteLine("データのロードに失敗しました。");
+                return false;
             }
         }
 
@@ -106,11 +110,33 @@ namespace JToDo
             {
                 path = args[1];
 
-                Load();
+                if (Load())
+                {
+                    MainLoop();
+                }
             }
             else
             {
                 Console.WriteLine("指定されたパスは存在しないか、開くことができるデータ形式ではありません。");
+            }
+        }
+
+        public static void MainLoop()
+        {
+            while (true)
+            {
+                PrintData();
+                Console.Write(">>");
+                string command = Console.ReadLine();
+                switch (command)
+                {
+                    case "quit":
+                        return;
+                    case "":
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
