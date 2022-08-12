@@ -9,5 +9,10 @@ namespace JToDo
     public class Title
     {
         public string title;
+
+        public Title(string title)
+        {
+            this.title = title;
+        }
     }
 }

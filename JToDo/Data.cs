@@ -9,6 +9,11 @@ namespace JToDo
 {
     public class Data
     {
-        public string title;
+        public string content;
+
+        public Data(string content)
+        {
+            this.content = content;
+        }
     }
 }
