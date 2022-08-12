@@ -12,27 +12,20 @@ namespace JToDo
         {
             if (args.Length == 0)
             {
-
+                Console.WriteLine("ヘルプは\"help\"と入力してください");
             }
             else
             {
                 switch (args[0])
                 {
                     case "help":
-                        Console.WriteLine("まだヘルプは作ってないです。");
+                        Command_Help();
                         break;
                     case "version":
-                        Console.WriteLine("0.0.0");
+                        Command_Version();
                         break;
                     case "open":
-                        if (args.Length == 2)
-                        {
-                            path = args[1];
-                        }
-                        else
-                        {
-                            Console.WriteLine("指定されたパスは存在しないか、開くことができるデータ形式ではありません。");
-                        }
+                        Command_Open(args);
                         break;
                     default:
                         break;
@@ -95,6 +88,30 @@ namespace JToDo
                     new Data("testdata2.0"),
                     new Data("testdata2.1")
                 };
+        }
+
+        public static void Command_Help()
+        {
+            Console.WriteLine("まだヘルプは作ってないです。");
+        }
+
+        public static void Command_Version()
+        {
+            Console.WriteLine("0.0.0");
+        }
+
+        public static void Command_Open(string[] args)
+        {
+            if (args.Length == 2)
+            {
+                path = args[1];
+
+                Load();
+            }
+            else
+            {
+                Console.WriteLine("指定されたパスは存在しないか、開くことができるデータ形式ではありません。");
+            }
         }
     }
 }
