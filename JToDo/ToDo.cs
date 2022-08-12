@@ -137,6 +137,8 @@ namespace JToDo
                     default:
                         break;
                 }
+
+                PrintData();
             }
         }
     }
