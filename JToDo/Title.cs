@@ -14,5 +14,15 @@ namespace JToDo
         {
             this.title = title;
         }
+
+        public void read(DataReader dataReader)
+        {
+            title = dataReader.GetString();
+        }
+
+        public void write(DataWriter dataWriter)
+        {
+            dataWriter.Put(title);
+        }
     }
 }

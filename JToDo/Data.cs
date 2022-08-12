@@ -15,5 +15,15 @@ namespace JToDo
         {
             this.content = content;
         }
+
+        public void read(DataReader dataReader)
+        {
+            content = dataReader.GetString();
+        }
+
+        public void write(DataWriter dataWriter)
+        {
+            dataWriter.Put(content);
+        }
     }
 }
