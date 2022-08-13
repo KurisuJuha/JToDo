@@ -12,9 +12,12 @@ namespace JToDo
         {
             if (args.Length == 0)
             {
-                Console.Write("open >>");
-                path = Console.ReadLine();
-                Open();
+                while (true)
+                {
+                    Console.Write("open >>");
+                    path = Console.ReadLine();
+                    Open();
+                }
             }
             else
             {
