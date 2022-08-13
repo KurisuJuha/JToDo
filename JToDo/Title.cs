@@ -29,5 +29,14 @@ namespace JToDo
         {
             dataWriter.Put(title);
         }
+        public override int GetHashCode()
+        {
+            return title.GetHashCode();
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return title == ((Title)obj).title;
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace JToDo
 {
@@ -12,34 +13,38 @@ namespace JToDo
         {
             if (args.Length == 0)
             {
-                while (true)
+                Commands(new string[]
                 {
-                    Console.Write("open >>");
-                    path = Console.ReadLine();
-                    Open();
-                }
+                    "open",
+                    "test.todo"
+                });
             }
             else
             {
-                switch (args[0])
-                {
-                    case "help":
-                        Command_Help();
-                        break;
-                    case "version":
-                        Command_Version();
-                        break;
-                    case "open":
-                        Command_Open(args);
-                        break;
-                    case "debug":
-                        path = args[1];
-                        DebugDataSet();
-                        Save();
-                        break;
-                    default:
-                        break;
-                }
+                Commands(args);
+            }
+        }
+
+        public static void Commands(string[] args)
+        {
+            switch (args[0])
+            {
+                case "help":
+                    Command_Help();
+                    break;
+                case "version":
+                    Command_Version();
+                    break;
+                case "open":
+                    Command_Open(args);
+                    break;
+                case "debug":
+                    path = args[1];
+                    DebugDataSet();
+                    Save();
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -76,6 +81,7 @@ namespace JToDo
             try
             {
                 DataReader dataReader = new DataReader(File.ReadAllBytes(path));
+                Table = new Dictionary<Title, List<Data>>();
 
                 // データの読み込み処理
                 int tablesize = dataReader.GetInt();
@@ -170,10 +176,28 @@ namespace JToDo
                     case "quit":
                         return;
                     case "add":
+                        Select(Table.Keys.Select(value => {
+                            return value.title;
+                        }).ToArray());
+                        Title list = new Title(Question("List>>"));
+                        string content = Question("content>>");
+
+                        if (!Table.ContainsKey(list))
+                        {
+                            Table[list] = new List<Data>();
+                        }
+                        Table[list].Add(new Data(content));
+
                         break;
                     case "addList":
                         break;
                     case "move":
+                        break;
+                    case "save":
+                        Save();
+                        break;
+                    case "load":
+                        Load();
                         break;
                     default:
                         Console.WriteLine("存在しないコマンドです。");
@@ -200,6 +224,26 @@ namespace JToDo
             }
 
             Console.Write('\n');
+        }
+
+        public static string Question(string question = "")
+        {
+            Console.Write(question);
+            return Console.ReadLine();
+        }
+
+        public static int Select(string[] contents)
+        {
+            int ret = 0;
+            List<(int, int)> positions = new List<(int, int)>();
+
+            foreach (var content in contents)
+            {
+                positions.Add(Console.GetCursorPosition());
+                Console.WriteLine(content);
+            }
+
+            return ret;
         }
     }
 }
