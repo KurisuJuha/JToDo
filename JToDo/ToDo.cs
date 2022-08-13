@@ -12,7 +12,9 @@ namespace JToDo
         {
             if (args.Length == 0)
             {
-                Console.WriteLine("ヘルプは\"help\"と入力してください");
+                Console.Write("open >>");
+                path = Console.ReadLine();
+                Open();
             }
             else
             {
@@ -144,10 +146,7 @@ namespace JToDo
             {
                 path = args[1];
 
-                if (Load())
-                {
-                    MainLoop();
-                }
+                Open();
             }
             else
             {
@@ -174,11 +173,19 @@ namespace JToDo
                     case "move":
                         break;
                     default:
-                        Console.WriteLine("存在しないコマンドです");
+                        Console.WriteLine("存在しないコマンドです。");
                         break;
                 }
 
                 PrintData();
+            }
+        }
+
+        public static void Open()
+        {
+            if (Load())
+            {
+                MainLoop();
             }
         }
 
