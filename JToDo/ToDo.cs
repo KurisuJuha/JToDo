@@ -184,9 +184,12 @@ namespace JToDo
 
                         if (!Table.ContainsKey(list))
                         {
-                            Table[list] = new List<Data>();
+                            Console.WriteLine("存在しないリストです。");
                         }
-                        Table[list].Add(new Data(content));
+                        else
+                        {
+                            Table[list].Add(new Data(content));
+                        }
 
                         break;
                     case "addList":
