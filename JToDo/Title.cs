@@ -15,6 +15,11 @@ namespace JToDo
             this.title = title;
         }
 
+        public Title(DataReader dataReader)
+        {
+            read(dataReader);
+        }
+
         public void read(DataReader dataReader)
         {
             title = dataReader.GetString();

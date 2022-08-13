@@ -27,6 +27,11 @@ namespace JToDo
                     case "open":
                         Command_Open(args);
                         break;
+                    case "debug":
+                        path = args[1];
+                        DebugDataSet();
+                        Save();
+                        break;
                     default:
                         break;
                 }
@@ -40,7 +45,17 @@ namespace JToDo
                 DataWriter dataWriter = new DataWriter();
 
                 // データの書き込み処理
+                dataWriter.Put(Table.Count);
+                foreach (var item in Table.Keys)
+                {
+                    item.write(dataWriter);
 
+                    dataWriter.Put(Table[item].Count);
+                    foreach (var item2 in Table[item])
+                    {
+                        item2.write(dataWriter);
+                    }
+                }
                 File.WriteAllBytes(path, dataWriter.GetData());
                 return true;
             }
@@ -58,6 +73,21 @@ namespace JToDo
                 DataReader dataReader = new DataReader(File.ReadAllBytes(path));
 
                 // データの読み込み処理
+                int tablesize = dataReader.GetInt();
+                for (int i = 0; i < tablesize; i++)
+                {
+                    Title title = new Title(dataReader);
+
+                    int contentsize = dataReader.GetInt();
+                    List<Data> data = new List<Data>();
+                    for (int j = 0; j < contentsize; j++)
+                    {
+                        data.Add(new Data(dataReader));
+                    }
+
+                    Table[title] = data;
+                }
+
                 return true;
             }
             catch (Exception)
@@ -69,6 +99,8 @@ namespace JToDo
 
         public static void PrintData()
         {
+            Separator();
+
             foreach (var title in Table.Keys)
             {
                 Console.WriteLine(title.title);
@@ -79,6 +111,8 @@ namespace JToDo
                 }
                 Console.Write('\n');
             }
+
+            Separator();
         }
 
         public static void DebugDataSet()
@@ -123,23 +157,39 @@ namespace JToDo
 
         public static void MainLoop()
         {
+            PrintData();
+
             while (true)
             {
-                PrintData();
                 Console.Write(">>");
                 string command = Console.ReadLine();
                 switch (command)
                 {
                     case "quit":
                         return;
-                    case "":
+                    case "add":
+                        break;
+                    case "addList":
+                        break;
+                    case "move":
                         break;
                     default:
+                        Console.WriteLine("存在しないコマンドです");
                         break;
                 }
 
                 PrintData();
             }
+        }
+
+        public static void Separator()
+        {
+            for (int i = 0; i < Console.WindowWidth; i++)
+            {
+                Console.Write("-");
+            }
+
+            Console.Write('\n');
         }
     }
 }

@@ -16,6 +16,11 @@ namespace JToDo
             this.content = content;
         }
 
+        public Data(DataReader dataReader)
+        {
+            read(dataReader);
+        }
+
         public void read(DataReader dataReader)
         {
             content = dataReader.GetString();
